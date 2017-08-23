@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.daoImpl.EmployeeDaoImpl;
 import com.entities.Bonus;
 import com.entities.Employee;
@@ -20,8 +22,9 @@ public class EmployeeApp {
 
 	static List<Employee> empList = new ArrayList<>();
 	static List<Bonus> bonusList = new ArrayList<>();
+	final static Logger logger = Logger.getLogger(EmployeeApp.class);
 
-	public static void main(String[] args) throws NumberFormatException, ParseException, SQLException {
+	public static void main(String[] args) {
 
 		BonusService bonusImpl = new BonusService();
 		EmployeeDaoImpl employeeImpl = new EmployeeDaoImpl();
@@ -47,7 +50,6 @@ public class EmployeeApp {
 						Integer.parseInt(tokens[5]));
 				empList.add(emp);
 			}
-			// System.out.println(empList);
 
 			// Creating the bonus objects and adding them to the bonus list.
 
@@ -60,7 +62,7 @@ public class EmployeeApp {
 
 			}
 
-
+			// Invoking the methods
 			bonusImpl.loadBonus(bonusList);
 			employeeImpl.loadEmployee(empList);
 			service.allocateBonus();
@@ -69,6 +71,10 @@ public class EmployeeApp {
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+		} catch (ParseException e) {
+			logger.error(e.getMessage());
 		}
 
 	}
